@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>图片属性编辑器</title>
+  <!-- 开发环境版本，包含了有帮助的命令行警告 -->
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <!-- 生产环境版本，优化了尺寸和速度 -->
+  <!-- <script src="https://cdn.jsdelivr.net/npm/vue"></script> -->
+
+  <script type="text/javascript" src="./index.js"></script>
+  <link rel="stylesheet" type="text/css" href="./style.css">
+</head>
+<body onload="onload();">
+<div id="main" class="main">
+  <div class="image-view">
+    <img id="image" class="image" :src="imageurl" mode="widthFix">
+  </div>
+  <div class="data-view" v-if="imageData">
+    <div class="type" v-for="type in imageData.types" v-if="type.codes.length>0">
+      <div class="type-name">{{type.name}}</div>
+      <div class="type-codes">
+        <div class="type-item" :class="selected(code)?'selected':''"v-for="code in type.codes" @click="typeclicked" :data-code="code">
+          <div class="type-code">{{imageData.code[code]}}</div>
+          <div class="type-color" v-if="parseInt(code/100)==4" :style="{backgroundColor: color[code]}"></div>
+        </div>
+      </div>
+    </div>
+    <div class="control">
+      <div class="pre-image" @click="preimage">＜</div>
+      <div class="next-image" @click="nextimage">＞</div>
+      <input class="page-input" :value="index" onchange="pagechange(this);">
+      <div class="page-status">总计{{imagefiles.length}}</div>
+      <button class="download" @click="download">保存</button>
+    </div>
+    <div>
+      <input class="page-range" type="range" name="range" min="0" :max="imagefiles.length-1" :value="index" oninput="pagechange(this)"/>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
